@@ -1,3 +1,5 @@
+import 'package:event_finder/screens/login.dart';
+import 'package:event_finder/screens/onboarding.dart';
 import 'package:event_finder/screens/splash.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +35,10 @@ class EventFinder extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(),
+      routes: <String, WidgetBuilder>{
+        '/onBoarding': (context) => const OnBoardingScreen(),
+        '/logIn': (context) => const LoginScreen(),
+      }
     );
   }
 }
