@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter_screenutil: ^5.9.3
   flutter_onboarding_slider: ^1.0.11
+  validated: ^2.0.0
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +69,10 @@ flutter:
     - lib/assets/images/onboarding_01.png
     - lib/assets/images/onboarding_02.png
     - lib/assets/images/onboarding_03.png
+
+    - lib/assets/icons/hide.svg
+    - lib/assets/icons/show.svg
+    - lib/assets/icons/home.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
