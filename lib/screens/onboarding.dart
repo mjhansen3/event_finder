@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,8 +8,10 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(430, 932));
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return OnBoardingSlider(
       controllerColor: const Color(0xFFFF7D0D),
@@ -36,24 +39,24 @@ class OnBoardingScreen extends StatelessWidget {
       },
       background: [
         SizedBox(
-          width: 430.w,
-          height: 525.h,
+          width: 375.w,
+          height: 470.h,
           child: Image.asset(
             'lib/assets/images/onboarding_01.png',
             fit: BoxFit.fill,
           ),
         ),
         SizedBox(
-          width: 430.w,
-          height: 525.h,
+          width: 375.w,
+          height: 470.h,
           child: Image.asset(
             'lib/assets/images/onboarding_02.png',
             fit: BoxFit.fill,
           ),
         ),
         SizedBox(
-          width: 430.w,
-          height: 525.h,
+          width: 375.w,
+          height: 470.h,
           child: Image.asset(
             'lib/assets/images/onboarding_03.png',
             fit: BoxFit.fill,
@@ -62,12 +65,12 @@ class OnBoardingScreen extends StatelessWidget {
       ],
       pageBodies: [
         Container(
-          margin: EdgeInsets.only(left: 25.w, right: 25.w),
+          margin: EdgeInsets.only(left: 18.w, right: 18.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 540.h,),
+              SizedBox(height: 480.h,),
               Text(
                 'Explore',
                 style: TextStyle(
@@ -75,30 +78,29 @@ class OnBoardingScreen extends StatelessWidget {
                   fontSize: 42.sp,
                   fontFamily: 'Marcellus',
                   fontWeight: FontWeight.w400,
-                  letterSpacing: 1.0,
                 ),
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(height: 5.h,),
               Text(
                 'Explore your favourite destination \naround the world.',
                 style: TextStyle(
                   color: const Color(0xFFAAAAAA),
-                  fontSize: 19.sp,
+                  fontSize: 16.sp,
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w400,
-                  height: 1.2,
+                  height: 1.2.h,
                 ),
               ),
             ],
           ),
         ),
         Container(
-          margin: EdgeInsets.only(left: 25.w, right: 25.w),
+          margin: EdgeInsets.only(left: 18.w, right: 18.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 540.h,),
+              SizedBox(height: 480.h,),
               Text(
                 'Easy Peasy',
                 style: TextStyle(
@@ -106,32 +108,29 @@ class OnBoardingScreen extends StatelessWidget {
                   fontSize: 42.sp,
                   fontFamily: 'Marcellus',
                   fontWeight: FontWeight.w400,
-                  letterSpacing: 1.0,
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
+              SizedBox(height: 5.h,),
               Text(
                 'Make your travel experience very \neasy & peasy.',
                 style: TextStyle(
                   color: const Color(0xFFAAAAAA),
-                  fontSize: 19.sp,
+                  fontSize: 16.sp,
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w400,
-                  height: 1.2,
+                  height: 1.2.h,
                 ),
               ),
             ],
           ),
         ),
         Container(
-          margin: EdgeInsets.only(left: 25.w, right: 25.w),
+          margin: EdgeInsets.only(left: 18.w, right: 18.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 540.h,),
+              SizedBox(height: 480.h,),
               Text(
                 'Enjoy Tour',
                 style: TextStyle(
@@ -139,18 +138,17 @@ class OnBoardingScreen extends StatelessWidget {
                   fontSize: 42.sp,
                   fontFamily: 'Marcellus',
                   fontWeight: FontWeight.w400,
-                  letterSpacing: 1.0,
                 ),
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(height: 5.h,),
               Text(
                 'Enjoy your favourite destination with \nyour love one.',
                 style: TextStyle(
                   color: const Color(0xFFAAAAAA),
-                  fontSize: 19.sp,
+                  fontSize: 16.sp,
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w400,
-                  height: 1.2,
+                  height: 1.2.h,
                 ),
               ),
             ],

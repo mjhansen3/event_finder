@@ -15,10 +15,11 @@ class _SplashScreenState extends State<SplashScreen> {
   final background = Container(
     decoration: const BoxDecoration(
       image: DecorationImage(
-          image: AssetImage(
-            "lib/assets/images/splash_screen.png",
-          ),
-          fit: BoxFit.fill),
+        image: AssetImage(
+          "lib/assets/images/splash_screen.png",
+        ),
+        fit: BoxFit.fill,
+      ),
     ),
   );
 
@@ -43,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(640, 1136));
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -54,15 +55,17 @@ class _SplashScreenState extends State<SplashScreen> {
           background,
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 75.h),
               Image.asset(
                 'lib/assets/images/Logo.png',
-                width: 400.w,
-                height: 125.h,
+                width: 250.w,
+                height: 50.h,
               ),
-              /*SizedBox(height: 15.h),*/
+              SizedBox(height: 10.h),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 80),
+                padding: EdgeInsets.symmetric(horizontal: 77.5.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -70,10 +73,10 @@ class _SplashScreenState extends State<SplashScreen> {
                       "Enjoy your traveling",
                       style: TextStyle(
                         color: const Color(0xFF000000),
-                        fontSize: 28.sp,
+                        fontSize: 16.sp,
                         fontFamily: 'Marcellus',
-                        /*fontWeight: FontWeight.w700,*/
-                        letterSpacing: 1.0,
+                        /*fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,*/
                       ),
                     ),
                   ],
