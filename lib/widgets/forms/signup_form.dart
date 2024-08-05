@@ -241,7 +241,7 @@ class _SignUpFormState extends State<SignUpForm> {
               const FinderCheckbox(
                 activeColor: Color.fromARGB(145, 255, 229, 208), 
                 checkColor: Color(0xFFFF7D0D),
-                radius: 5.0
+                radius: 4.0
               ),
               SizedBox(
                 width: 5.w,

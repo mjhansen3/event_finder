@@ -19,40 +19,53 @@ class FinderCheckbox extends StatefulWidget {
 }
 
 class _FinderCheckboxState extends State<FinderCheckbox> {
-  bool _checkValue = false;
+  late bool _checkValue;
+
+  @override
+  void initState() {
+    _checkValue = false;
+    
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        if (_checkValue) {
-          setState(() {
-            _checkValue = !_checkValue;
-          });
+      onTap: () {    
+        setState(() {
+          _checkValue = !_checkValue;
+        });
 
-          if (kDebugMode) {
-            print(_checkValue);
-          }
+        if (kDebugMode) {
+          print(_checkValue);
         }
       },
+      splashColor: const Color.fromARGB(145, 255, 229, 208),
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(widget.radius.r),
+      ),
       child: Container(
         width: 15.w,
         height: 15.h,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: _checkValue ? widget.activeColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(widget.radius.w),
+          borderRadius: BorderRadius.circular(widget.radius.r),
         ),
         child: _checkValue
           ? Icon(
             Icons.check,
-            size: 20.0.dg,
+            size: 10.0.dg,
             color: widget.checkColor,
           )
-          : Icon(
-            Icons.check_box_outline_blank,
-            size: 20.0.dg,
-            color: const Color(0xFFEEEEEE),
+          : Container(
+            width: 15.w,
+            height: 15.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: const Color(0xFFEEEEEE),
+              borderRadius: BorderRadius.circular(widget.radius.w),
+            ),
           ),
         ),
       );
