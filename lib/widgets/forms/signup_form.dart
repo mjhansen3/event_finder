@@ -27,12 +27,20 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  bool _obscureText = true;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   // shows password
   void _passwordVisibility() {
     setState(() {
-      _obscureText = !_obscureText;
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+
+  // show confirm password
+  void _confirmPasswordVisibility() {
+    setState(() {
+      _obscureConfirmPassword = !_obscureConfirmPassword;
     });
   }
 
@@ -118,7 +126,7 @@ class _SignUpFormState extends State<SignUpForm> {
             height: 5.h,
           ),
           TextFormField(
-            obscureText: _obscureText,
+            obscureText: _obscurePassword,
             obscuringCharacter: '•',
             style: TextStyle(
               fontSize: 16.sp,
@@ -144,7 +152,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               suffixIcon: IconButton(
                 onPressed: _passwordVisibility,
-                icon: _obscureText
+                icon: _obscurePassword
                     ? SvgPicture.asset(
                         "lib/assets/icons/show.svg",
                         width: 20.w,
@@ -157,7 +165,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
               ),
             ),
-            keyboardType: TextInputType.visiblePassword,
             onSaved: widget.onSavedEmail(),
             //textInputAction: TextInputAction.next,
           ),
@@ -177,7 +184,7 @@ class _SignUpFormState extends State<SignUpForm> {
             height: 5.h,
           ),
           TextFormField(
-            obscureText: _obscureText,
+            obscureText: _obscureConfirmPassword,
             obscuringCharacter: '•',
             style: TextStyle(
               fontSize: 16.sp,
@@ -202,8 +209,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
               ),
               suffixIcon: IconButton(
-                onPressed: _passwordVisibility,
-                icon: _obscureText
+                onPressed: _confirmPasswordVisibility,
+                icon: _obscureConfirmPassword
                     ? SvgPicture.asset(
                         "lib/assets/icons/show.svg",
                         width: 20.w,
@@ -216,7 +223,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
               ),
             ),
-            keyboardType: TextInputType.visiblePassword,
             onSaved: widget.onSavedEmail(),
             //textInputAction: TextInputAction.next,
           ),
