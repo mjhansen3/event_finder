@@ -1,5 +1,4 @@
-// ignore_for_file: file_names
-
+import 'package:event_finder/widgets/buttons/lng_finder_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -54,7 +53,7 @@ class _LogInFormState extends State<LogInForm> {
               color: const Color(0xFF666666),
               fontSize: 16.sp,
               fontFamily: 'Gilroy',
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(
@@ -86,7 +85,7 @@ class _LogInFormState extends State<LogInForm> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0.w),
                 borderSide: BorderSide(
-                  color: const Color(0xAA9A9A9A),
+                  color: const Color(0xFFEEEEEE),
                   width: 1.25.w,
                 ),
               ),
@@ -111,7 +110,7 @@ class _LogInFormState extends State<LogInForm> {
               color: const Color(0xFF666666),
               fontSize: 16.sp,
               fontFamily: 'Gilroy',
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(
@@ -160,6 +159,89 @@ class _LogInFormState extends State<LogInForm> {
             keyboardType: TextInputType.visiblePassword,
             onSaved: widget.onSavedEmail(),
             //textInputAction: TextInputAction.next,
+          ),
+          SizedBox(
+            height: 31.h,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '');
+            },
+            child: Center(
+              child: Text(
+                'Forgot Password?',
+                style: TextStyle(
+                  color: const Color(0xFFFF7D0D),
+                  fontSize: 13.sp,
+                  fontFamily: 'Gilroy',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          /*LogInButton(
+            onPressed: (){}, 
+            btnLoginClicked: false,
+          ),*/
+          LngFinderButton(
+            onPressed: () {},
+            hasBtnImage: false,
+            bgColor: const Color(0xFFFF7D0D), 
+            hasElevation: true,
+            elevation: const Offset(0.0, 2.0),
+            elevationColor: const Color(0xFFFFD1AA),
+            btnText: 'Log In', 
+            btnTextColor: const Color(0xFFFFFFFF)
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          Center(
+            child: Text(
+              'Or',
+              style: TextStyle(
+                color: const Color(0xFFAAAAAA),
+                fontSize: 16.sp,
+                fontFamily: 'Gilroy',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          LngFinderButton(
+            onPressed: () {},
+            hasBtnImage: true,
+            btnImage: 'lib/assets/images/google_g_logo.png',
+            bgColor: const Color(0xFFFFFFFF), 
+            hasElevation: true,
+            elevation: const Offset(0.0, 2.0),
+            elevationColor: const Color.fromARGB(170, 200, 200, 200),
+            btnText: 'Log In With Google', 
+            btnTextColor: const Color(0xFF2c2c2c)
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/signUp');
+            },
+            child: Center(
+              child: Text(
+                'Sign Up Here',
+                style: TextStyle(
+                  color: const Color(0xFFFF7D0D),
+                  fontSize: 13.sp,
+                  fontFamily: 'Gilroy',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -1,23 +1,23 @@
-import 'package:event_finder/widgets/forms/login_form.dart';
+import 'package:event_finder/widgets/forms/signup_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:validated/validated.dart' as validate;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> _logInFormKey = GlobalKey<FormState>();
+class _LoginScreenState extends State<SignupScreen> {
+  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
 
   bool btnClicked = false;
-  bool validateLoginForm = false;
-  
+  bool validateSignupForm = false;
+
   String? _validateEmail(String value) {
     if (value.isEmpty) {
       return "The email address is required.";
@@ -34,17 +34,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   submit() async {
     setState(() {
-      validateLoginForm = true;
+      validateSignupForm = true;
     });
 
-    if (_logInFormKey.currentState!.validate()) {
-      _logInFormKey.currentState?.save(); // Save our form now.
+    if (_signUpFormKey.currentState!.validate()) {
+      _signUpFormKey.currentState?.save(); // Save our form now.
     } else {
       if (kDebugMode) {
         print("error");
       }
       setState(() {
-        validateLoginForm = false;
+        validateSignupForm = false;
       });
     }
   }
@@ -65,7 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 126.h,),
+              SizedBox(
+                height: 126.h,
+              ),
               Image.asset(
                 'lib/assets/images/Logo.png',
                 width: 180.w,
@@ -92,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Center(
                 child: Text(
-                  "Log In",
+                  "Sign Up",
                   style: TextStyle(
                     color: const Color(0xFF000000),
                     fontSize: 30.sp,
@@ -103,11 +105,11 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 51.h,
               ),
-              LogInForm(
-                formKey: _logInFormKey,
+              SignUpForm(
+                formKey: _signUpFormKey, 
+                onSavedEmail: () {}, 
+                validateEmail: _validateEmail, 
                 autoValidate: AutovalidateMode.onUserInteraction,
-                validateEmail: _validateEmail,
-                onSavedEmail: () {},
               ),
             ],
           ),
