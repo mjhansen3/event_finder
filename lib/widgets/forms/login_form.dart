@@ -1,48 +1,39 @@
-import 'package:event_finder/widgets/buttons/lng_finder_button.dart';
+import 'package:event_finder/riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LogInForm extends StatefulWidget {
+class LoginForm extends ConsumerWidget {
   final Function onSavedEmail;
-  /*final Function onSavedPassword;
-  final Widget logInButton;*/
+  final Widget loginButton;
+  final Widget? socialLoginButton;
+  final bool hasSocialLogin;
   final AutovalidateMode autoValidate;
   final Key formKey;
   final Function validateEmail;
 
-  const LogInForm({
+  const LoginForm({
     super.key,
     required this.formKey,
     required this.onSavedEmail,
-    /*required this.onSavedPassword,*/
-    /*required this.logInButton,*/
+    required this.loginButton,
+    this.socialLoginButton,
+    required this.hasSocialLogin,
     required this.validateEmail,
     required this.autoValidate,
-  });
+  }) : assert(
+            hasSocialLogin == false || socialLoginButton != null,
+            'If hasSocialLogin is true, socialLoginButton must be provided.'); 
 
   @override
-  State<LogInForm> createState() => _LogInFormState();
-}
-
-class _LogInFormState extends State<LogInForm> {
-  bool _obscureText = true;
-
-  // shows password
-  void _passwordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
 
     return Form(
-      key: widget.formKey,
-      autovalidateMode: widget.autoValidate,
+      key: formKey,
+      autovalidateMode: autoValidate,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +89,7 @@ class _LogInFormState extends State<LogInForm> {
               ),*/
             ),
             keyboardType: TextInputType.emailAddress,
-            onSaved: widget.onSavedEmail(),
+            onSaved: onSavedEmail(),
             //textInputAction: TextInputAction.next,
           ),
           SizedBox(
@@ -117,7 +108,7 @@ class _LogInFormState extends State<LogInForm> {
             height: 5.h,
           ),
           TextFormField(
-            obscureText: _obscureText,
+            obscureText: ref.watch(riverpod).loginObscurePassword,
             obscuringCharacter: '•',
             style: TextStyle(
               fontSize: 16.sp,
@@ -142,8 +133,10 @@ class _LogInFormState extends State<LogInForm> {
                 ),
               ),
               suffixIcon: IconButton(
-                onPressed: _passwordVisibility,
-                icon: _obscureText
+                onPressed: () {
+                  ref.read(riverpod).passwordVisibilityLoginForm();
+                },
+                icon: ref.watch(riverpod).loginObscurePassword
                 ? SvgPicture.asset(
                   "lib/assets/icons/show.svg",
                   width: 20.w,
@@ -157,7 +150,7 @@ class _LogInFormState extends State<LogInForm> {
               ),
             ),
             keyboardType: TextInputType.visiblePassword,
-            onSaved: widget.onSavedEmail(),
+            onSaved: onSavedEmail(),
             //textInputAction: TextInputAction.next,
           ),
           SizedBox(
@@ -182,51 +175,32 @@ class _LogInFormState extends State<LogInForm> {
           SizedBox(
             height: 16.h,
           ),
-          /*LogInButton(
-            onPressed: (){}, 
-            btnLoginClicked: false,
-          ),*/
-          LngFinderButton(
-            onPressed: () {},
-            hasBtnImage: false,
-            bgColor: const Color(0xFFFF7D0D), 
-            hasElevation: true,
-            elevation: const Offset(0.0, 2.0),
-            elevationColor: const Color(0xFFFFD1AA),
-            btnText: 'Log In', 
-            btnTextColor: const Color(0xFFFFFFFF)
-          ),
+          loginButton,
           SizedBox(
-            height: 16.h,
+            height: hasSocialLogin ? 16.h : 20.0.h,
           ),
-          Center(
-            child: Text(
-              'Or',
-              style: TextStyle(
-                color: const Color(0xFFAAAAAA),
-                fontSize: 16.sp,
-                fontFamily: 'Gilroy',
-                fontWeight: FontWeight.w500,
-              ),
+          hasSocialLogin ? Center(
+            child: Column(
+              children: [
+                Text(
+                  'Or',
+                  style: TextStyle(
+                    color: const Color(0xFFAAAAAA),
+                    fontSize: 16.sp,
+                    fontFamily: 'Gilroy',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(
+                  height: 16.h,
+                ),
+                Container(child: socialLoginButton),
+                SizedBox(
+                  height: 20.h,
+                ),
+              ],
             ),
-          ),
-          SizedBox(
-            height: 16.h,
-          ),
-          LngFinderButton(
-            onPressed: () {},
-            hasBtnImage: true,
-            btnImage: 'lib/assets/images/google_g_logo.png',
-            bgColor: const Color(0xFFFFFFFF), 
-            hasElevation: true,
-            elevation: const Offset(0.0, 2.0),
-            elevationColor: const Color.fromARGB(170, 200, 200, 200),
-            btnText: 'Log In With Google', 
-            btnTextColor: const Color(0xFF2c2c2c)
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
+          ) : const SizedBox.shrink(),
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/signUp');

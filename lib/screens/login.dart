@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:validated/validated.dart' as validate;
 
+import '../widgets/buttons/lng_finder_button.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -103,11 +105,33 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 51.h,
               ),
-              LogInForm(
+              LoginForm(
                 formKey: _logInFormKey,
                 autoValidate: AutovalidateMode.onUserInteraction,
                 validateEmail: _validateEmail,
                 onSavedEmail: () {},
+                hasSocialLogin: true,
+                loginButton: LngFinderButton(
+                  onPressed: () {},
+                  hasBtnImage: false,
+                  bgColor: const Color(0xFFFF7D0D), 
+                  hasElevation: true,
+                  elevation: const Offset(0.0, 2.0),
+                  elevationColor: const Color(0xFFFFD1AA),
+                  btnText: 'Log In', 
+                  btnTextColor: const Color(0xFFFFFFFF)
+                ),
+                socialLoginButton: LngFinderButton(
+                  onPressed: () {},
+                  hasBtnImage: true,
+                  btnImage: 'lib/assets/images/google_g_logo.png',
+                  bgColor: const Color(0xFFFFFFFF),
+                  hasElevation: true,
+                  elevation: const Offset(0.0, 2.0),
+                  elevationColor: const Color.fromARGB(170, 200, 200, 200),
+                  btnText: 'Log In With Google',
+                  btnTextColor: const Color(0xFF2c2c2c)
+                ),
               ),
             ],
           ),

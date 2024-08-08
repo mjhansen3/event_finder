@@ -1,57 +1,47 @@
-import 'package:event_finder/widgets/buttons/lng_finder_button.dart';
+import 'package:event_finder/riverpod/riverpod.dart';
 import 'package:event_finder/widgets/finder_checkbox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class SignUpForm extends StatefulWidget {
+class SignUpForm extends ConsumerWidget {
   final Function onSavedEmail;
-  /*final Function onSavedPassword;
-  final Widget logInButton;*/
+  final Function onSavedPassword;
+  final Widget signUpButton;
   final AutovalidateMode autoValidate;
   final Key formKey;
   final Function validateEmail;
+  final Function validatePassword;
+  final Function validateConfirmPassword;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final Widget? showPasswordButton;
+  final Widget? showConfirmPasswordButton;
 
   const SignUpForm({
     super.key,
     required this.formKey,
     required this.onSavedEmail,
-    /*required this.onSavedPassword,*/
-    /*required this.logInButton,*/
+    required this.onSavedPassword,
+    required this.signUpButton,
     required this.validateEmail,
     required this.autoValidate,
+    required this.emailController,
+    required this.passwordController,
+    required this.validatePassword,
+    required this.validateConfirmPassword,
+    this.showPasswordButton,
+    this.showConfirmPasswordButton,
   });
 
   @override
-  State<SignUpForm> createState() => _SignUpFormState();
-}
-
-class _SignUpFormState extends State<SignUpForm> {
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
-
-  // shows password
-  void _passwordVisibility() {
-    setState(() {
-      _obscurePassword = !_obscurePassword;
-    });
-  }
-
-  // show confirm password
-  void _confirmPasswordVisibility() {
-    setState(() {
-      _obscureConfirmPassword = !_obscureConfirmPassword;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
 
     return Form(
-      key: widget.formKey,
-      autovalidateMode: widget.autoValidate,
+      key: formKey,
+      autovalidateMode: autoValidate,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +59,7 @@ class _SignUpFormState extends State<SignUpForm> {
             height: 5.h,
           ),
           TextFormField(
+            controller: emailController,
             style: TextStyle(
               fontSize: 16.sp,
               fontFamily: 'Gilroy',
@@ -107,8 +98,8 @@ class _SignUpFormState extends State<SignUpForm> {
               ),*/
             ),
             keyboardType: TextInputType.emailAddress,
-            onSaved: widget.onSavedEmail(),
-            //textInputAction: TextInputAction.next,
+            onSaved: (e){},
+            textInputAction: TextInputAction.next,
           ),
           SizedBox(
             height: 23.h,
@@ -126,8 +117,9 @@ class _SignUpFormState extends State<SignUpForm> {
             height: 5.h,
           ),
           TextFormField(
-            obscureText: _obscurePassword,
+            obscureText: ref.watch(riverpod).signupObscurePassword,
             obscuringCharacter: '•',
+            controller: passwordController,
             style: TextStyle(
               fontSize: 16.sp,
               fontFamily: 'Gilroy',
@@ -150,23 +142,11 @@ class _SignUpFormState extends State<SignUpForm> {
                   width: 1.25.w,
                 ),
               ),
-              suffixIcon: IconButton(
-                onPressed: _passwordVisibility,
-                icon: _obscurePassword
-                    ? SvgPicture.asset(
-                        "lib/assets/icons/show.svg",
-                        width: 20.w,
-                        height: 20.h,
-                      )
-                    : SvgPicture.asset(
-                        "lib/assets/icons/hide.svg",
-                        width: 20.w,
-                        height: 20.h,
-                      ),
-              ),
+              suffixIcon: showPasswordButton,
             ),
-            onSaved: widget.onSavedEmail(),
-            //textInputAction: TextInputAction.next,
+            onSaved: (e){},
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
           ),
           SizedBox(
             height: 23.h,
@@ -184,7 +164,7 @@ class _SignUpFormState extends State<SignUpForm> {
             height: 5.h,
           ),
           TextFormField(
-            obscureText: _obscureConfirmPassword,
+            obscureText: ref.read(riverpod).signupObscureConfirmPassword,
             obscuringCharacter: '•',
             style: TextStyle(
               fontSize: 16.sp,
@@ -208,23 +188,10 @@ class _SignUpFormState extends State<SignUpForm> {
                   width: 1.25.w,
                 ),
               ),
-              suffixIcon: IconButton(
-                onPressed: _confirmPasswordVisibility,
-                icon: _obscureConfirmPassword
-                    ? SvgPicture.asset(
-                        "lib/assets/icons/show.svg",
-                        width: 20.w,
-                        height: 20.h,
-                      )
-                    : SvgPicture.asset(
-                        "lib/assets/icons/hide.svg",
-                        width: 20.w,
-                        height: 20.h,
-                      ),
-              ),
+              suffixIcon: showConfirmPasswordButton,
             ),
-            onSaved: widget.onSavedEmail(),
-            //textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
           ),
           SizedBox(
             height: 15.h,
@@ -232,18 +199,6 @@ class _SignUpFormState extends State<SignUpForm> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /*Checkbox(
-                value: false,
-                activeColor: const Color.fromARGB(145, 255, 229, 208),
-                checkColor: const Color(0xFFFF7D0D),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.w),
-                ),
-                onChanged: (e) {},
-              ),
-              SizedBox(
-                width: 5.w,
-              ),*/
               const FinderCheckbox(
                 activeColor: Color.fromARGB(145, 255, 229, 208), 
                 checkColor: Color(0xFFFF7D0D),
@@ -281,16 +236,7 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(
             height: 17.h,
           ),
-          LngFinderButton(
-            onPressed: () {},
-            hasBtnImage: false,
-            bgColor: const Color(0xFFFF7D0D),
-            hasElevation: true,
-            elevation: const Offset(0.0, 2.0),
-            elevationColor: const Color(0xFFFFD1AA),
-            btnText: 'Sign Up',
-            btnTextColor: const Color(0xFFFFFFFF),
-          ),
+          signUpButton,
         ],
       ),
     );

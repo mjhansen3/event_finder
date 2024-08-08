@@ -1,38 +1,72 @@
 import 'package:event_finder/widgets/forms/signup_form.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:validated/validated.dart' as validate;
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+import '../riverpod/riverpod.dart';
+import '../widgets/buttons/lng_finder_button.dart';
 
-  @override
-  State<SignupScreen> createState() => _LoginScreenState();
-}
+class SignupScreen extends ConsumerWidget {
+  SignupScreen({super.key});
 
-class _LoginScreenState extends State<SignupScreen> {
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  bool btnClicked = false;
-  bool validateSignupForm = false;
+  final bool btnClicked = false;
+  final bool validateSignupForm = false;
+
+  /*String? _validateName(String value) {
+    String pattern = r'(^[a-zA-ZÀ-ÿ- ]+$)';
+    RegExp regExp = RegExp(pattern);
+
+    if (value.isEmpty) {
+      return 'The Name is required.';
+    } else if (!regExp.hasMatch(value)) {
+      return 'The Name must contain a-z, à-ÿ or space characters.';
+    }
+
+    return null;
+  }*/
 
   String? _validateEmail(String value) {
-    if (value.isEmpty) {
-      return "The email address is required.";
-    } else {
-      try {
-        validate.isEmail(value);
-      } catch (e) {
-        return 'The email address must be a valid email address.';
-      }
+    // If empty value, the isEmail function throw a error.
+    // So I changed this function with try and catch.
+    try {
+      validate.isEmail(value);
+    } catch (e) {
+      return 'Requires a valid email address.';
     }
 
     return null;
   }
 
-  submit() async {
+  String? _validatePassword(String value) {
+    if (value.length < 6) {
+      return 'The Password must be at least 6 characters.';
+    }
+
+    return null;
+  }
+
+  String? _validateConfirmPassword(String value) {
+    var password = _passwordController.text;
+
+    if (value.isNotEmpty && password.isNotEmpty) {
+      if (value != password) {
+        return "Confirm Password mismatch";
+      }
+    } else if (value.isEmpty) {
+      return "Confirm Password required";
+    }
+
+    return null;
+  }
+
+  /*submit() async {
     setState(() {
       validateSignupForm = true;
     });
@@ -47,10 +81,10 @@ class _LoginScreenState extends State<SignupScreen> {
         validateSignupForm = false;
       });
     }
-  }
+  }*/
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
 
@@ -106,10 +140,57 @@ class _LoginScreenState extends State<SignupScreen> {
                 height: 51.h,
               ),
               SignUpForm(
-                formKey: _signUpFormKey, 
-                onSavedEmail: () {}, 
-                validateEmail: _validateEmail, 
+                formKey: _signUpFormKey,
+                emailController: _emailController,
+                passwordController: _passwordController,
+                onSavedEmail: (String value) {},
+                onSavedPassword: (String value) {},
+                validateEmail: _validateEmail,
+                validatePassword: _validatePassword,
+                validateConfirmPassword: _validateConfirmPassword,
                 autoValidate: AutovalidateMode.onUserInteraction,
+                showPasswordButton: IconButton(
+                  onPressed: () {
+                    ref.read(riverpod).passwordVisibilitySignupForm();
+                  },
+                  icon: ref.watch(riverpod).signupObscurePassword
+                  ? SvgPicture.asset(
+                      "lib/assets/icons/show.svg",
+                      width: 20.w,
+                      height: 20.h,
+                    )
+                  : SvgPicture.asset(
+                      "lib/assets/icons/hide.svg",
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                ),
+                showConfirmPasswordButton: IconButton(
+                  onPressed: () {
+                    ref.read(riverpod).confirmPasswordVisibilitySignupForm();
+                  },
+                  icon: ref.watch(riverpod).signupObscureConfirmPassword
+                  ? SvgPicture.asset(
+                      "lib/assets/icons/show.svg",
+                      width: 20.w,
+                      height: 20.h,
+                    )
+                  : SvgPicture.asset(
+                      "lib/assets/icons/hide.svg",
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                ),
+                signUpButton: LngFinderButton(
+                  onPressed: () {},
+                  hasBtnImage: false,
+                  bgColor: const Color(0xFFFF7D0D),
+                  hasElevation: true,
+                  elevation: const Offset(0.0, 2.0),
+                  elevationColor: const Color(0xFFFFD1AA),
+                  btnText: 'Sign Up',
+                  btnTextColor: const Color(0xFFFFFFFF),
+                ),
               ),
             ],
           ),
