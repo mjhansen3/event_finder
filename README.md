@@ -7,7 +7,7 @@ The purpose of this project is to demonstrates my skill & experience in using Fl
 This project is based off on the ui design by: [Light Grey](https://www.sketchappsources.com/contributor/lightgrey)
 
 as seen here in the image below:
-<img src="https://github.com/mjhansen3/event_finder/raw/md_img/Screenshot.png">
+<img src="https://github.com/mjhansen3/event_finder/raw/main/md_img/Screenshot.png">
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
