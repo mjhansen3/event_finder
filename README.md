@@ -1,12 +1,13 @@
 # event_finder
 
-A new Flutter project.
+The purpose of this project is to demonstrates my skill & experience in using Flutter for mobile development.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is based off on the ui design by: [Light Grey](https://www.sketchappsources.com/contributor/lightgrey)
 
-A few resources to get you started if this is your first Flutter project:
+as seen here in the image below:
+<img src="https://github.com/mjhansen3/event_finder/raw/md_img/Screenshot.png">
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
