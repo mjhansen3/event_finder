@@ -1,5 +1,7 @@
 import 'package:event_finder/riverpod/riverpod.dart';
 import 'package:event_finder/widgets/finder_checkbox.dart';
+import 'package:event_finder/widgets/form_label.dart';
+import 'package:event_finder/widgets/terms_use_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,9 +14,7 @@ class SignUpForm extends ConsumerWidget {
   final Key formKey;
   final Function validateEmail;
   final Function validatePassword;
-  final Function validateConfirmPassword;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
+  final Function? validateConfirmPassword;
   final Widget? showPasswordButton;
   final Widget? showConfirmPasswordButton;
 
@@ -26,19 +26,14 @@ class SignUpForm extends ConsumerWidget {
     required this.signUpButton,
     required this.validateEmail,
     required this.autoValidate,
-    required this.emailController,
-    required this.passwordController,
     required this.validatePassword,
-    required this.validateConfirmPassword,
+    this.validateConfirmPassword,
     this.showPasswordButton,
     this.showConfirmPasswordButton,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
-    ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
-
     return Form(
       key: formKey,
       autovalidateMode: autoValidate,
@@ -46,56 +41,20 @@ class SignUpForm extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'Email',
-            style: TextStyle(
-              color: const Color(0xFF666666),
-              fontSize: 16.sp,
-              fontFamily: 'Gilroy',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          formLabel("Email"),
           SizedBox(
             height: 5.h,
           ),
           TextFormField(
-            controller: emailController,
+            controller: ref.watch(riverpod).signupEmailController,
+            textCapitalization: TextCapitalization.none,
             style: TextStyle(
               fontSize: 16.sp,
               fontFamily: 'Gilroy',
               fontWeight: FontWeight.w400,
             ),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(10.w, 8.5.h, 10.w, 8.5.h),
-              hintText: "eg. someone@gmail.com",
-              hintStyle: TextStyle(
-                fontSize: 16.sp,
-                fontFamily: 'Gilroy',
-                fontWeight: FontWeight.w400,
-                color: const Color(0xAA666666),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0.w),
-                borderSide: BorderSide(
-                  color: const Color(0xFFFF7D0D),
-                  width: 1.25.w,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0.w),
-                borderSide: BorderSide(
-                  color: const Color(0xFFEEEEEE),
-                  width: 1.25.w,
-                ),
-              ),
-              /*errorText: 'Requires a valid Email.',
-              errorStyle: TextStyle(
-                fontSize: 12.sp,
-                fontFamily: 'Gilroy',
-                fontWeight: FontWeight.w400,
-                color: Colors.red,
-              ),*/
+            decoration: _inputDecoration(
+              'eg. someone@somewhere.com',
             ),
             keyboardType: TextInputType.emailAddress,
             onSaved: (e){},
@@ -104,44 +63,21 @@ class SignUpForm extends ConsumerWidget {
           SizedBox(
             height: 23.h,
           ),
-          Text(
-            'Password',
-            style: TextStyle(
-              color: const Color(0xFF666666),
-              fontSize: 16.sp,
-              fontFamily: 'Gilroy',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          formLabel("Password"),
           SizedBox(
             height: 5.h,
           ),
           TextFormField(
             obscureText: ref.watch(riverpod).signupObscurePassword,
             obscuringCharacter: '•',
-            controller: passwordController,
+            controller: ref.watch(riverpod).signupPasswordController,
             style: TextStyle(
               fontSize: 16.sp,
               fontFamily: 'Gilroy',
               fontWeight: FontWeight.w400,
             ),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(10.w, 8.5.h, 10.w, 8.5.h),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0.w),
-                borderSide: BorderSide(
-                  color: const Color(0xFFFF7D0D),
-                  width: 1.25.w,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0.w),
-                borderSide: BorderSide(
-                  color: const Color(0xFFEEEEEE),
-                  width: 1.25.w,
-                ),
-              ),
+            decoration: _inputDecoration(
+              '', 
               suffixIcon: showPasswordButton,
             ),
             onSaved: (e){},
@@ -151,15 +87,7 @@ class SignUpForm extends ConsumerWidget {
           SizedBox(
             height: 23.h,
           ),
-          Text(
-            'Confirm Password',
-            style: TextStyle(
-              color: const Color(0xFF666666),
-              fontSize: 16.sp,
-              fontFamily: 'Gilroy',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          formLabel("Confirm Password"),
           SizedBox(
             height: 5.h,
           ),
@@ -171,23 +99,8 @@ class SignUpForm extends ConsumerWidget {
               fontFamily: 'Gilroy',
               fontWeight: FontWeight.w400,
             ),
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(10.w, 8.5.h, 10.w, 8.5.h),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0.w),
-                borderSide: BorderSide(
-                  color: const Color(0xFFFF7D0D),
-                  width: 1.25.w,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0.w),
-                borderSide: BorderSide(
-                  color: const Color(0xFFEEEEEE),
-                  width: 1.25.w,
-                ),
-              ),
+            decoration: _inputDecoration(
+              '', 
               suffixIcon: showConfirmPasswordButton,
             ),
             keyboardType: TextInputType.text,
@@ -207,30 +120,7 @@ class SignUpForm extends ConsumerWidget {
               SizedBox(
                 width: 5.w,
               ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'I agree and accept the ',
-                      style: TextStyle(
-                        color: const Color(0xFF000000),
-                        fontSize: 13.sp,
-                        fontFamily: 'Gilroy',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'terms of use.',
-                      style: TextStyle(
-                        color: const Color(0xFFFF7D0D),
-                        fontSize: 13.sp,
-                        fontFamily: 'Gilroy',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ]
-                )
-              ),
+              termsOfUseText(),
             ],
           ),
           SizedBox(
@@ -239,6 +129,36 @@ class SignUpForm extends ConsumerWidget {
           signUpButton,
         ],
       ),
+    );
+  } 
+  
+  // Helper methods for common UI elements
+  InputDecoration _inputDecoration(String? hintText, {Widget? suffixIcon}) {
+    return InputDecoration(
+      isDense: true,
+      contentPadding: EdgeInsets.fromLTRB(10.w, 8.5.h, 10.w, 8.5.h),
+      hintText: hintText,
+      hintStyle: TextStyle(
+        fontSize: 16.sp,
+        fontFamily: 'Gilroy',
+        fontWeight: FontWeight.w400,
+        color: const Color(0xAA666666),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0.w),
+        borderSide: BorderSide(
+          color: const Color(0xFFFF7D0D),
+          width: 1.25.w,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0.w),
+        borderSide: BorderSide(
+          color: const Color(0xFFEEEEEE),
+          width: 1.25.w,
+        ),
+      ),
+      suffixIcon: suffixIcon,
     );
   }
 }

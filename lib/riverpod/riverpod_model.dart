@@ -1,15 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class RiverpodModel extends ChangeNotifier {
   bool signupObscurePassword;
   bool signupObscureConfirmPassword;
   bool loginObscurePassword;
+  late TextEditingController signupEmailController;
+  late TextEditingController signupPasswordController;
 
   RiverpodModel({
     required this.signupObscurePassword,
     required this.signupObscureConfirmPassword,
     required this.loginObscurePassword,
+    required this.signupEmailController,
+    required this.signupPasswordController,
   });
 
   // show login password: on LoginForm

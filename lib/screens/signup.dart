@@ -1,4 +1,6 @@
+import 'package:event_finder/services/api.dart';
 import 'package:event_finder/widgets/forms/signup_form.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,24 +15,9 @@ class SignupScreen extends ConsumerWidget {
   SignupScreen({super.key});
 
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
 
   final bool btnClicked = false;
   final bool validateSignupForm = false;
-
-  /*String? _validateName(String value) {
-    String pattern = r'(^[a-zA-ZÀ-ÿ- ]+$)';
-    RegExp regExp = RegExp(pattern);
-
-    if (value.isEmpty) {
-      return 'The Name is required.';
-    } else if (!regExp.hasMatch(value)) {
-      return 'The Name must contain a-z, à-ÿ or space characters.';
-    }
-
-    return null;
-  }*/
 
   String? _validateEmail(String value) {
     // If empty value, the isEmail function throw a error.
@@ -52,42 +39,35 @@ class SignupScreen extends ConsumerWidget {
     return null;
   }
 
-  String? _validateConfirmPassword(String value) {
-    var password = _passwordController.text;
-
-    if (value.isNotEmpty && password.isNotEmpty) {
-      if (value != password) {
-        return "Confirm Password mismatch";
-      }
-    } else if (value.isEmpty) {
+  String? _validateConfirmPassword(String value, WidgetRef ref) {
+    var password = ref.watch(riverpod).signupPasswordController.text;
+    if (value.isEmpty) {
       return "Confirm Password required";
+    } else if (value != password) {
+      return "Confirm Password mismatch";
     }
-
     return null;
   }
 
-  /*submit() async {
-    setState(() {
-      validateSignupForm = true;
-    });
-
+  void _submitForm(WidgetRef ref) async {
     if (_signUpFormKey.currentState!.validate()) {
-      _signUpFormKey.currentState?.save(); // Save our form now.
+      _signUpFormKey.currentState?.save();
+
+      var signupData = {
+        "email": ref.watch(riverpod).signupEmailController.text,
+        "password": ref.watch(riverpod).signupPasswordController.text,
+      };
+
+      await Api.createUser(signupData);
     } else {
       if (kDebugMode) {
-        print("error");
+        print("Form is not valid");
       }
-      setState(() {
-        validateSignupForm = false;
-      });
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
-    ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
-
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return Scaffold(
@@ -141,13 +121,16 @@ class SignupScreen extends ConsumerWidget {
               ),
               SignUpForm(
                 formKey: _signUpFormKey,
-                emailController: _emailController,
-                passwordController: _passwordController,
-                onSavedEmail: (String value) {},
-                onSavedPassword: (String value) {},
+                onSavedEmail: (String value) {
+                  ref.read(riverpod).signupEmailController.text = value;
+                },
+                onSavedPassword: (String value) {
+                  ref.read(riverpod).signupPasswordController.text = value;
+                },
                 validateEmail: _validateEmail,
                 validatePassword: _validatePassword,
-                validateConfirmPassword: _validateConfirmPassword,
+                validateConfirmPassword: (value) =>
+                    _validateConfirmPassword(value!, ref),
                 autoValidate: AutovalidateMode.onUserInteraction,
                 showPasswordButton: IconButton(
                   onPressed: () {
@@ -182,7 +165,7 @@ class SignupScreen extends ConsumerWidget {
                     ),
                 ),
                 signUpButton: LngFinderButton(
-                  onPressed: () {},
+                  onPressed: () => _submitForm(ref),
                   hasBtnImage: false,
                   bgColor: const Color(0xFFFF7D0D),
                   hasElevation: true,

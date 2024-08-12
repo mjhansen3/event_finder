@@ -4,6 +4,7 @@ import 'package:event_finder/screens/signup.dart';
 import 'package:event_finder/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(
@@ -16,9 +17,11 @@ void main() {
 class EventFinder extends StatelessWidget {
   const EventFinder({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
+    ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
+    
     return MaterialApp(
       title: 'Event Finder',
       theme: ThemeData(
