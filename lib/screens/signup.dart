@@ -52,15 +52,23 @@ class SignupScreen extends ConsumerWidget {
   void _submitForm(WidgetRef ref, c) async {
     if (_signUpFormKey.currentState!.validate()) {
       _signUpFormKey.currentState?.save();
+      var username = ref.watch(riverpod).signupEmailController.text.split('@')[0];
 
       var signupData = {
+        "name": username,
         "email": ref.watch(riverpod).signupEmailController.text,
         "password": ref.watch(riverpod).signupPasswordController.text,
       };
 
       await Api.createUser(signupData);
 
-      Navigator.pushNamedAndRemoveUntil(c, '/home', (Route<dynamic> route) => false);
+      if (c.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          c,
+          '/home',
+          (Route<dynamic> route) => false,
+        );
+    }
     } else {
       if (kDebugMode) {
         print("Form is not valid");

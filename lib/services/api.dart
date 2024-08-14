@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const baseUrl = "http://192.168.1.231:2000/api/";
+  //static const baseUrl = "http://192.168.1.231:2000/api/";
+  static const baseUrl = "http://192.168.178.175:2000/api/";
 
   static createUser(Map userData) async {
     var url = Uri.parse("${baseUrl}create_user");
