@@ -14,7 +14,7 @@ class Api {
       final res = await http.post(url, body: userData);
 
       if (res.statusCode == 200) {
-        var resData = jsonDecode(res.body.toString());
+        var resData = jsonDecode(res.body);
         debugPrint(resData.toString());
       } else {
         debugPrint("Failed to get response.");

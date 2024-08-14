@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:validated/validated.dart' as validate;
 
 import '../riverpod/riverpod.dart';
-import '../widgets/buttons/lng_finder_button.dart';
+import '../widgets/buttons/finder_button.dart';
 
 class SignupScreen extends ConsumerWidget {
   SignupScreen({super.key});
@@ -49,7 +49,7 @@ class SignupScreen extends ConsumerWidget {
     return null;
   }
 
-  void _submitForm(WidgetRef ref) async {
+  void _submitForm(WidgetRef ref, c) async {
     if (_signUpFormKey.currentState!.validate()) {
       _signUpFormKey.currentState?.save();
 
@@ -59,6 +59,8 @@ class SignupScreen extends ConsumerWidget {
       };
 
       await Api.createUser(signupData);
+
+      Navigator.pushNamedAndRemoveUntil(c, '/home', (Route<dynamic> route) => false);
     } else {
       if (kDebugMode) {
         print("Form is not valid");
@@ -164,9 +166,11 @@ class SignupScreen extends ConsumerWidget {
                       height: 20.h,
                     ),
                 ),
-                signUpButton: LngFinderButton(
-                  onPressed: () => _submitForm(ref),
+                signUpButton: FinderButton(
+                  onPressed: () => _submitForm(ref, context),
+                  btnImageSVG: false,
                   hasBtnImage: false,
+                  hasBtnText: true,
                   bgColor: const Color(0xFFFF7D0D),
                   hasElevation: true,
                   elevation: const Offset(0.0, 2.0),

@@ -73,10 +73,13 @@ flutter:
     - lib/assets/images/onboarding_01.png
     - lib/assets/images/onboarding_02.png
     - lib/assets/images/onboarding_03.png
+    - lib/assets/images/profile_placeholder.png
 
     - lib/assets/icons/hide.svg
     - lib/assets/icons/show.svg
     - lib/assets/icons/home.svg
+    - lib/assets/icons/menu-bar.svg
+    - lib/assets/icons/search.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -100,8 +103,11 @@ flutter:
         - asset: lib/assets/fonts/Gilroy-Light.ttf
         - asset: lib/assets/fonts/Gilroy-Regular.ttf
         - asset: lib/assets/fonts/Gilroy-Medium.ttf
-        - asset: lib/assets/fonts/Gilroy-Bold.ttf
         - asset: lib/assets/fonts/Gilroy-Heavy.ttf
+
+    - family: Gilroy-Bold
+      fonts:
+        - asset: lib/assets/fonts/Gilroy-Bold.ttf
 
   #   - family: Trajan Pro
   #     fonts:

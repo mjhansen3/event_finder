@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:validated/validated.dart' as validate;
 
-import '../widgets/buttons/lng_finder_button.dart';
+import '../widgets/buttons/finder_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -111,9 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 validateEmail: _validateEmail,
                 onSavedEmail: () {},
                 hasSocialLogin: true,
-                loginButton: LngFinderButton(
+                loginButton: FinderButton(
                   onPressed: () {},
+                  btnImageSVG: false,
                   hasBtnImage: false,
+                  hasBtnText: true,
                   bgColor: const Color(0xFFFF7D0D), 
                   hasElevation: true,
                   elevation: const Offset(0.0, 2.0),
@@ -121,9 +123,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   btnText: 'Log In', 
                   btnTextColor: const Color(0xFFFFFFFF)
                 ),
-                socialLoginButton: LngFinderButton(
+                socialLoginButton: FinderButton(
                   onPressed: () {},
                   hasBtnImage: true,
+                  btnImageSVG: false,
+                  hasBtnText: true,
                   btnImage: 'lib/assets/images/google_g_logo.png',
                   bgColor: const Color(0xFFFFFFFF),
                   hasElevation: true,
