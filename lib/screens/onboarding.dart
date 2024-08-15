@@ -1,18 +1,21 @@
+import 'package:event_finder/riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class OnBoardingScreen extends StatelessWidget {
+class OnBoardingScreen extends ConsumerStatefulWidget {
   const OnBoardingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
-    ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
+  // ignore: library_private_types_in_public_api
+  _OnBoardingScreenState createState() => _OnBoardingScreenState();
+}
 
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
+  @override
+  Widget build(BuildContext contextf) {
     return OnBoardingSlider(
       controllerColor: const Color(0xFFFF7D0D),
       totalPage: 3,
@@ -34,8 +37,13 @@ class OnBoardingScreen extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(15))
         )
       ),
-      onFinish: () {
-        Navigator.pushReplacementNamed(context, '/logIn');
+      onFinish: () async {
+        ref.read(riverpod).completeOnboarding();
+        debugPrint('Onboarding Status Btn Clicked: ${ref.watch(riverpod).completedOnboarding}');
+        
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/logIn');
+        }
       },
       background: [
         SizedBox(

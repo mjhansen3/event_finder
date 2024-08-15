@@ -1,17 +1,22 @@
 import 'dart:async';
 
+import 'package:event_finder/riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  // ignore: library_private_types_in_public_api
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
+  late SharedPreferences prefs;
+
   final background = Container(
     decoration: const BoxDecoration(
       image: DecorationImage(
@@ -23,31 +28,34 @@ class _SplashScreenState extends State<SplashScreen> {
     ),
   );
 
-  /*void splashTimeOut() {
-    var user = StoreProvider.of<AppState>(context).state.userState != null
-        ? StoreProvider.of<AppState>(context).state.userState["user"]
-        : null;
-    if (user != null && user["verified"] == true) {
-      Navigator.pushReplacementNamed(context, '/homeCalendar');
-    } else if (user != null && user["verified"] == false) {
-      Navigator.pushReplacementNamed(context, '/emailVerifyScreen');
-    } else {
-      Navigator.pushReplacementNamed(context, '/getStarted');
-    }
-  }*/
-
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () => Navigator.pushReplacementNamed(context, '/onBoarding'));
+
+    // Delay for 3 seconds and navigate to the Home screen
+    Future.delayed(const Duration(seconds: 3), () async {
+      prefs = await SharedPreferences.getInstance();
+      ref.watch(riverpod).completedOnboarding =
+          prefs.getBool('completedOnboarding') ?? false;
+
+      if (mounted) {
+        final hasCompletedOnboarding =
+            ref.watch(riverpod).completedOnboarding;
+            debugPrint('Onboarding Status: $hasCompletedOnboarding');
+
+        if (hasCompletedOnboarding == true) {
+          debugPrint('Navigate to Login Screen');
+          Navigator.of(context).pushReplacementNamed('/logIn');
+        } else {
+          debugPrint('Navigate to Onboarding Screen');
+          Navigator.of(context).pushReplacementNamed('/onBoarding');
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
-    ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
-
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,

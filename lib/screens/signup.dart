@@ -2,7 +2,6 @@ import 'package:event_finder/services/api.dart';
 import 'package:event_finder/widgets/forms/signup_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -68,7 +67,7 @@ class SignupScreen extends ConsumerWidget {
           '/home',
           (Route<dynamic> route) => false,
         );
-    }
+     }
     } else {
       if (kDebugMode) {
         print("Form is not valid");
@@ -78,8 +77,6 @@ class SignupScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(

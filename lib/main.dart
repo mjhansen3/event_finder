@@ -4,10 +4,13 @@ import 'package:event_finder/screens/onboarding.dart';
 import 'package:event_finder/screens/signup.dart';
 import 'package:event_finder/screens/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     const ProviderScope(
       child: EventFinder()
@@ -15,13 +18,15 @@ void main() {
   );
 }
 
-class EventFinder extends StatelessWidget {
+class EventFinder extends ConsumerWidget {
   const EventFinder({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     ScreenUtil.enableScale(enableWH: () => true, enableText: () => true);
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     
     return MaterialApp(
       title: 'Event Finder',

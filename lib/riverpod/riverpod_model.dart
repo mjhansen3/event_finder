@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RiverpodModel extends ChangeNotifier {
   bool signupObscurePassword;
@@ -8,6 +9,13 @@ class RiverpodModel extends ChangeNotifier {
   bool loginObscurePassword;
   late TextEditingController signupEmailController;
   late TextEditingController signupPasswordController;
+  late SharedPreferences prefs;
+  late bool completedOnboarding;
+
+  // Onboarding state managed by this model
+  // bool _hasCompletedOnboarding = false;
+
+  // bool get hasCompletedOnboarding => _hasCompletedOnboarding;
 
   RiverpodModel({
     required this.signupObscurePassword,
@@ -15,16 +23,35 @@ class RiverpodModel extends ChangeNotifier {
     required this.loginObscurePassword,
     required this.signupEmailController,
     required this.signupPasswordController,
-  });
+  }) {
+    loadPreferences();
+  }
+  
+  // Asynchronous method to load preferences
+  Future<void> loadPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    completedOnboarding = prefs.getBool('completedOnboarding')!;
+    
+
+    debugPrint('Loaded Preferences!');
+    debugPrint('Loaded Onboarding Status: $completedOnboarding');
+  }
+
+  // Method to set onboarding completed flag
+  void completeOnboarding() async {
+    prefs = await SharedPreferences.getInstance();
+    completedOnboarding = await prefs.setBool('completedOnboarding', true);
+    notifyListeners();
+
+    debugPrint('Onboarding Status Saved');
+  }
 
   // show login password: on LoginForm
   void passwordVisibilityLoginForm() {
     loginObscurePassword = !loginObscurePassword;
     notifyListeners();
 
-    if (kDebugMode) {
-      print("Hide Password: $loginObscurePassword");
-    }
+    debugPrint('Hide Password: $loginObscurePassword');
   }
 
   // show signup password: on SignupForm
@@ -32,9 +59,7 @@ class RiverpodModel extends ChangeNotifier {
     signupObscurePassword = !signupObscurePassword;
     notifyListeners();
 
-    if (kDebugMode) {
-      print("Hide Password: $signupObscurePassword");
-    }
+    debugPrint('Hide Password: $signupObscurePassword');
   }
 
   // show confirm password: on SignupForm
@@ -42,8 +67,6 @@ class RiverpodModel extends ChangeNotifier {
     signupObscureConfirmPassword = !signupObscureConfirmPassword;
     notifyListeners();
 
-    if (kDebugMode) {
-      print("Hide Confirm Password: $signupObscureConfirmPassword");
-    }
+    debugPrint('Hide Confirm Password: $signupObscureConfirmPassword');
   }
 }
